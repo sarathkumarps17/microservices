@@ -2,7 +2,9 @@
 blog/client/node_modules
 blog/server/posts/node_modules
 blog/server/comments/node_modules
-
+blog/server/event_bus/node_modules
+blog/server/query/node_modules
+blog/server/moderation/node_modules
 # misc
 .DS_Store
 .env.local

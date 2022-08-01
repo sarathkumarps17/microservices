@@ -7,19 +7,28 @@ const crypto_1 = require("crypto");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const cors_1 = __importDefault(require("cors"));
+const Types_1 = require("./Types");
+const axios_1 = __importDefault(require("axios"));
 const PORT = 8080;
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 const posts = [];
 app.get('/posts', (req, res) => {
-    res.status(200).json({ posts });
+    return res.status(200).json({ posts });
 });
 app.post('/posts', (req, res) => {
     const id = (0, crypto_1.randomBytes)(4).toString('hex');
     const { title } = req.body;
-    posts.push({ id, title, comments: [] });
-    res.status(200).json({ posts });
+    posts.push({ id, title });
+    const post = posts.filter(post => post.id === id)[0];
+    const evnetData = { type: Types_1.EventType.postCreated, payload: { id, data: title } };
+    axios_1.default.post('http://localhost:8085/events', evnetData).catch(err => console.log('emitting post event failed'));
+    return res.status(200).json({ post });
+});
+app.post('/events', (req, res) => {
+    // console.log('Recived event',req.body);
+    res.status(200);
 });
 app.listen(PORT, () => {
     console.log(`Post service running on PORT ${PORT}`);
