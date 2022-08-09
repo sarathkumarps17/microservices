@@ -7,8 +7,8 @@ import { EventData, EventRequest, EventType, Payload, Post, PostResponse } from 
 const PORT = 8082;
 
 const app = express();
-app.use(cors());
 app.use(bodyParser.json());
+app.use(cors());
 
 const posts:Post[] = [];
 
@@ -36,18 +36,16 @@ const handleEvent = (type:EventType,payload:Payload)=>{
 app.post('/events',(req:EventRequest,res:Response)=>{
     const {type,payload} = req.body;
     handleEvent(type,payload)
-    // console.log(posts)
     res.status(200)
 });
 
 app.get('/posts',(req:Request,res:PostResponse)=>{
-    console.log(posts)
     res.status(200).json(posts)
 });
 
 app.listen(PORT,()=>{
     console.log(`query service is running on PORT ${PORT}`);
-     axios.get('http://localhost:8085/events').then((res:AxiosResponse<EventData[]>)=>{
+     axios.get('http://event-bus-srv:8085/events').then((res:AxiosResponse<EventData[]>)=>{
         res.data.map(event=>{
             handleEvent(event.type,event.payload);
         })

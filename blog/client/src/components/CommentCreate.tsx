@@ -11,7 +11,7 @@ const CommentCreate = ({ postId }: PostId) => {
   const onSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
-    await axios.post(`http://localhost:8081/posts/${postId}/comments`, {
+    await axios.post(`http://posts.com/posts/${postId}/comments`, {
       comment,
     });
     dispatch(fetchPosts());

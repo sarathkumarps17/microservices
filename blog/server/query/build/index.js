@@ -10,8 +10,8 @@ const axios_1 = __importDefault(require("axios"));
 const types_1 = require("./types");
 const PORT = 8082;
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
+app.use((0, cors_1.default)());
 const posts = [];
 const handleEvent = (type, payload) => {
     switch (type) {
@@ -38,16 +38,14 @@ const handleEvent = (type, payload) => {
 app.post('/events', (req, res) => {
     const { type, payload } = req.body;
     handleEvent(type, payload);
-    // console.log(posts)
     res.status(200);
 });
 app.get('/posts', (req, res) => {
-    console.log(posts);
     res.status(200).json(posts);
 });
 app.listen(PORT, () => {
     console.log(`query service is running on PORT ${PORT}`);
-    axios_1.default.get('http://localhost:8085/events').then((res) => {
+    axios_1.default.get('http://event-bus-srv:8085/events').then((res) => {
         res.data.map(event => {
             handleEvent(event.type, event.payload);
         });

@@ -8,9 +8,11 @@ const PostCreate = () => {
   const onSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
-    await axios.post("http://localhost:8080/posts", {
-      title,
-    });
+    await axios
+      .post("http://posts.com/posts/create", {
+        title,
+      })
+      .catch((e) => console.log("post creatiion failed"));
     dispatch(fetchPosts());
     setTitle("");
   };

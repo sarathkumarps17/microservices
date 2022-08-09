@@ -1,0 +1,65 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: sarathkumar17/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/components/*.tsx'
+            dest: .
+          - src: 'src/app/fetaures/*.ts'
+            dest: .
+          - src: 'src/app/*.ts'
+            dest: .
+          - src: 'src/types/*.ts'
+            dest: .
+    - image: sarathkumar17/comments
+      context: server/comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'build/*.js'
+            dest: .
+    - image: sarathkumar17/event-bus
+      context: server/event_bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'build/*.js'
+            dest: .
+    - image: sarathkumar17/moderation
+      context: server/moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'build/*.js'
+            dest: .
+    - image: sarathkumar17/posts
+      context: server/posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'build/*.js'
+            dest: .
+    - image: sarathkumar17/query
+      context: server/query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'build/*.js'
+            dest: .
+         

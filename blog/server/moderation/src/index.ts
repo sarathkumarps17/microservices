@@ -32,7 +32,7 @@ app.post('/events',async(req:Event,res:Response)=>{
                         status
                     }
                 }
-                axios.post('http://localhost:8085/events',eventData).catch(err=>console.log('emitting commnet moderation event failed'));
+                axios.post('http://event-bus-srv:8085/events',eventData).catch(err=>console.log('emitting commnet moderation event failed'));
                 break;
         
             default:

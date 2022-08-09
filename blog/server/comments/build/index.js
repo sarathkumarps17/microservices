@@ -12,8 +12,8 @@ const axios_1 = __importDefault(require("axios"));
 const PORT = 8081;
 const app = (0, express_1.default)();
 const commentsByPostId = [];
-app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
+app.use((0, cors_1.default)());
 app.get("/posts/:id/comments", (req, res) => {
     const postId = req.params.id;
     let postComments = commentsByPostId.filter(comments => comments.postId === postId);
@@ -23,6 +23,7 @@ app.post("/posts/:id/comments", (req, res) => {
     const postId = req.params.id;
     const commentId = (0, crypto_1.randomBytes)(4).toString('hex');
     const { comment } = req.body;
+    // console.log(comment)
     const commentByPostId = { postId, comment: { commentId, content: comment } };
     commentsByPostId.push(commentByPostId);
     const eventData = { type: Types_1.EventType.commnetCreated, payload: {
@@ -31,8 +32,8 @@ app.post("/posts/:id/comments", (req, res) => {
             data: comment,
             status: Types_1.Status.pending
         } };
-    axios_1.default.post('http://localhost:8085/events', eventData).catch(err => console.log('emitting commnet created event failed'));
-    return res.status(200).json(commentByPostId);
+    // axios.post('http://event-bus-srv:8085/events',eventData).catch(err=>console.log('emitting commnet created event failed'));
+    // return res.status(200).json(commentByPostId)
 });
 app.post('/events', (req, res) => {
     const { type, payload } = req.body;
@@ -42,7 +43,7 @@ app.post('/events', (req, res) => {
                 type: Types_1.EventType.commnetUpdated,
                 payload
             };
-            axios_1.default.post('http://localhost:8085/events', eventData).catch(err => console.log('emitting commnet moderation event failed'));
+            axios_1.default.post('http://event-bus-srv:8085/events', eventData).catch(err => console.log('emitting commnet moderation event failed'));
             break;
         default:
             break;

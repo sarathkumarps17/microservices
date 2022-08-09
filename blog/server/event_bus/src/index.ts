@@ -16,10 +16,10 @@ app.post('/events',(req:Event,res:Response)=>{
 
     const event = req.body;
     events.push(event);
-    axios.post(`${BaseUrl}8080/events`,event).catch(err=>console.log('Post service event reception failed!'));
-    axios.post(`${BaseUrl}8081/events`,event).catch(err=>console.log('Comment service event reception failed!'));
-    axios.post(`${BaseUrl}8082/events`,event).catch(err=>console.log('Query service event reception failed!'));
-    axios.post(`${BaseUrl}8083/events`,event).catch(err=>console.log('Moderaton service event reception failed!'));
+    axios.post(`http://posts-clusterip-srv:8080/events`,event).catch(err=>console.log('Post service event reception failed!'));
+    axios.post(`http://comments-clusterip-srv:8081/events`,event).catch(err=>console.log('Comment service event reception failed!'));
+    axios.post(`http://query-clusterip-srv:8082/events`,event).catch(err=>console.log('Query service event reception failed!'));
+    axios.post(`http://moderation-clusterip-srv:8083/events`,event).catch(err=>console.log('Moderaton service event reception failed!'));
     return res.status(200);
     
 });

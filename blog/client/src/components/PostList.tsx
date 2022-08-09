@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios, { AxiosResponse } from "axios";
+import React, { useEffect } from "react";
 import CommentCreate from "./CommentCreate";
 import CommentList from "./CommentList";
-import { Post } from "../types/types";
 import { useAppSelector, useAppDispatch } from "../app/storeHooks";
 import { fetchPosts } from "../app/fetaures/postAPI";
 const PostList = () => {
@@ -29,7 +27,7 @@ const PostList = () => {
         key={post.id}
       >
         <div className="card-body">
-          <h3>{post.title}</h3>
+          <h3>{post.title.toUpperCase()}</h3>
           <CommentList comments={post.comments} />
           <CommentCreate postId={post.id} />
         </div>
